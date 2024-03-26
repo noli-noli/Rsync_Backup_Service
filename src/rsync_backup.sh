@@ -5,7 +5,7 @@
 ############################################
 
 #バックアップ先のディレクトリ
-SAVEDIR="/mnt/backup/incremental_backup/hare-machine"
+SAVEDIR="/mnt/backup/incremental_backup/HARE-machine"
 
 #バックアップ元のディレクトリ
 TARGETDIR="/home/"
@@ -35,13 +35,9 @@ if [ ! -d $SAVEDIR ]; then  #バックアップ先ディレクトリの存在確
 elif [ ! -d $TARGETDIR ]; then  #バックアップ元ディレクトリの存在確認
     echo "[Check:NG] Not found target directory"
     exit 1
-elif [ ! -d $LOGDIR ]; then  #ログディレクトリの存在確認
-    echo "[Check:NG] Not found log directory"
-    exit 1
 else
     echo "[Check:OK] Success to check directories"
 fi
-
 
 #コマンドの存在確認
 if [ "/usr/bin/rsync" != $(which rsync) ]; then
@@ -51,8 +47,16 @@ else
     echo "[Check:OK] Found rsync command"
 fi
 
+#ログディレクトリの作成
+if [ ! -d $LOGDIR ]; then
+    mkdir -p $LOGDIR
+    echo "[Check:OK] Create log directory"
+else
+    echo "[Check:OK] Found log directory"
+fi
 
-#ログ保存ディレクトリのチェック
+
+#ログファイルのチェック
 if [ ! -e $LOGDIR/rsync_backup.log ]; then
     touch $LOGDIR/rsync_backup.log
     echo "[Check:OK] Create log file"
