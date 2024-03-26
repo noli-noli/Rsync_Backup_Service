@@ -8,7 +8,7 @@
 SAVEDIR="/mnt/backup/incremental_backup/hare-machine"
 
 #バックアップ元のディレクトリ
-TARGETDIR="/home/gp20a051/test_dir"
+TARGETDIR="/home/"
 
 #ログディレクトリ
 LOGDIR="/var/log/rsync_backup-service"
@@ -74,7 +74,7 @@ exec &> >(awk '{print strftime("[%Y/%m/%d %H:%M:%S] "),$0 } { fflush() } ' >> $L
 LATESTBKUP=$(ls $SAVEDIR | grep backup- | tail -n 1)
 
 #バックアップの実行
-rsync -avhz --link-dest="$SAVEDIR/$LATESTBKUP" "$TARGETDIR" "$SAVEDIR/home_backup-$(date +%Y_%m-%d_%H-%M)"
+rsync -avhz --link-dest="$SAVEDIR/$LATESTBKUP" "$TARGETDIR" "$SAVEDIR/home-backup_$(date +%Y_%m-%d_%H-%M)"
 
 #30日以上前のバックアップを削除
 find $SAVEDIR -type d -name "home_backup-*" -mtime +30 | xargs rm -rf
