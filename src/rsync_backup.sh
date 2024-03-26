@@ -78,7 +78,7 @@ date +"[%Y/%m/%d %H:%M:%S] Start rsync backup" >> $LOGDIR/rsync_backup.log
 exec $LOGLEVEL> >(awk '{print strftime("[%Y/%m/%d %H:%M:%S] "),$0 } { fflush() } ' >> $LOGDIR/rsync_backup.log)
 
 #直近のバックアップのディレクトリ名を取得
-LATESTBKUP=$(ls $SAVEDIR | grep backup- | tail -n 1)
+LATESTBKUP=$(ls $SAVEDIR | grep home-backup_ | tail -n 1)
 
 #バックアップの実行
 rsync -avhz --link-dest="$SAVEDIR/$LATESTBKUP" "$TARGETDIR" "$SAVEDIR/home-backup_$(date +%Y_%m-%d_%H-%M)"
