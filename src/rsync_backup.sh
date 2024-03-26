@@ -5,7 +5,7 @@
 ############################################
 
 #バックアップ先のディレクトリ
-SAVEDIR="/mnt/backup/incremental_backup/HARE-machine"
+SAVEDIR="/mnt/backup/incremental_backup/HOGEHOGE-machine"
 
 #バックアップ元のディレクトリ
 TARGETDIR="/home/"
