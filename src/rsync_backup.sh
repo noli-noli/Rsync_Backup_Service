@@ -13,6 +13,9 @@ TARGETDIR="/home/"
 #ログディレクトリ
 LOGDIR="/var/log/rsync_backup-service"
 
+#ログレベル
+LOGLEVEL=2
+
 
 
 ############################################
@@ -69,10 +72,10 @@ fi
 ############################################
 
 #起動時のログを記録
-echo "Start rsync backup" >> $LOGDIR/rsync_backup.log
+date +"[%Y/%m/%d %H:%M:%S] Start rsync backup" >> $LOGDIR/rsync_backup.log
 
 #標準出力と標準エラー出力をログファイルにリダイレクト
-exec &> >(awk '{print strftime("[%Y/%m/%d %H:%M:%S] "),$0 } { fflush() } ' >> $LOGDIR/rsync_backup.log)
+exec $LOGLEVEL> >(awk '{print strftime("[%Y/%m/%d %H:%M:%S] "),$0 } { fflush() } ' >> $LOGDIR/rsync_backup.log)
 
 #直近のバックアップのディレクトリ名を取得
 LATESTBKUP=$(ls $SAVEDIR | grep backup- | tail -n 1)
@@ -87,6 +90,6 @@ find $SAVEDIR -type d -name "home_backup-*" -mtime +30 | xargs rm -rf
 exec &>/dev/null
 
 #終了時のログを記録
-echo "Finish rsync backup" >> $LOGDIR/rsync_backup.log
+date +"[%Y/%m/%d %H:%M:%S] Finish rsync backup" >> $LOGDIR/rsync_backup.log
 
 exit 0
