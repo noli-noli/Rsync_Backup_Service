@@ -87,7 +87,7 @@ rsync -avhz --link-dest="$SAVEDIR/$LATESTBKUP" "$TARGETDIR" "$SAVEDIR/home-backu
 find $SAVEDIR -type d -name "home_backup-*" -mtime +30 | xargs rm -rf
 
 #標準出力と標準エラー出力のリダイレクトを停止
-exec &>/dev/null
+exec $LOGLEVEL>/dev/null
 
 #終了時のログを記録
 date +"[%Y/%m/%d %H:%M:%S] Finish rsync backup" >> $LOGDIR/rsync_backup.log
