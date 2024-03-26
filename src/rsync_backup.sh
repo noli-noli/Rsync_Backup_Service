@@ -10,11 +10,11 @@ SAVEDIR="/mnt/backup/incremental_backup/HOGEHOGE-machine"
 #バックアップ元のディレクトリ
 TARGETDIR="/home/"
 
+#保存名称
+SAVE_NAME="home-backup_"
+
 #ログディレクトリ
 LOGDIR="/var/log/rsync_backup-service"
-
-#ログレベル
-LOGLEVEL=2
 
 
 
@@ -74,20 +74,20 @@ fi
 #起動時のログを記録
 date +"[%Y/%m/%d %H:%M:%S] Start rsync backup" >> $LOGDIR/rsync_backup.log
 
-#標準出力と標準エラー出力をログファイルにリダイレクト
-exec $LOGLEVEL> >(awk '{print strftime("[%Y/%m/%d %H:%M:%S] "),$0 } { fflush() } ' >> $LOGDIR/rsync_backup.log)
+#標準エラー出力をログファイルにリダイレクト
+exec 2> >(awk '{print strftime("[%Y/%m/%d %H:%M:%S] "),$0 } { fflush() } ' >> $LOGDIR/rsync_backup.log)
 
 #直近のバックアップのディレクトリ名を取得
-LATESTBKUP=$(ls $SAVEDIR | grep home-backup_ | tail -n 1)
+LATESTBKUP=$(ls $SAVEDIR | grep $SAVE_NAME | tail -n 1)
 
 #バックアップの実行
-rsync -avhz --link-dest="$SAVEDIR/$LATESTBKUP" "$TARGETDIR" "$SAVEDIR/home-backup_$(date +%Y_%m-%d_%H-%M)"
+rsync -avhz --link-dest="$SAVEDIR/$LATESTBKUP" "$TARGETDIR" "$SAVEDIR/$SAVE_NAME$(date +%Y_%m-%d_%H-%M)"
 
 #30日以上前のバックアップを削除
-find $SAVEDIR -type d -name "home_backup-*" -mtime +30 | xargs rm -rf
+find $SAVEDIR -type d -name "$SAVE_NAME*" -mtime +30 | xargs rm -rf
 
 #標準出力と標準エラー出力のリダイレクトを停止
-exec $LOGLEVEL>/dev/null
+exec 2>/dev/null
 
 #終了時のログを記録
 date +"[%Y/%m/%d %H:%M:%S] Finish rsync backup" >> $LOGDIR/rsync_backup.log
