@@ -3,7 +3,6 @@ Description=Rsync Backup Service for timer
 
 [Timer]
 OnCalendar=Mon-Sun 0:00:00
-Persistent=true
 
 [Install]
 WantedBy=timers.target
