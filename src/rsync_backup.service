@@ -1,0 +1,9 @@
+[Unit]
+Description=Rsync Backup Service for main
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/rsync_backup.sh
+
+[Install]
+WantedBy=timers.target
