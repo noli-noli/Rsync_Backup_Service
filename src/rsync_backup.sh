@@ -7,8 +7,8 @@
 #バックアップ先のディレクトリ
 SAVEDIR="/mnt/backup/incremental_backup/HOGEHOGE-machine"
 
-#バックアップ元のディレクトリ
-TARGETDIR="/home/"
+#バックアップ元のディレクトリ(「/」を含むか否かで動作が異なるので注意。タイムスタンプ等に影響有)
+TARGETDIR="/home"
 
 #保存名称
 SAVE_NAME="home-backup_"
@@ -84,7 +84,7 @@ LATESTBKUP=$(ls $SAVEDIR | grep $SAVE_NAME | tail -n 1)
 rsync -avhz --link-dest="$SAVEDIR/$LATESTBKUP" "$TARGETDIR" "$SAVEDIR/$SAVE_NAME$(date +%Y_%m-%d_%H-%M)"
 
 #30日以上前のバックアップを削除
-find $SAVEDIR -type d -name "$SAVE_NAME*" -mtime +30 | xargs rm -rf
+find "$SAVEDIR/*" -maxdepth 1 -type d -name "$SAVE_NAME*" -mtime +30 | xargs rm -rf
 
 #標準出力と標準エラー出力のリダイレクトを停止
 exec 2>/dev/null
