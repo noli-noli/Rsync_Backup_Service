@@ -81,7 +81,7 @@ exec 2> >(awk '{print strftime("[%Y/%m/%d %H:%M:%S] "),$0 } { fflush() } ' >> $L
 LATESTBKUP=$(ls $SAVEDIR | grep $SAVE_NAME | tail -n 1)
 
 #バックアップの実行
-rsync -avhz --link-dest="$SAVEDIR/$LATESTBKUP" "$TARGETDIR" "$SAVEDIR/$SAVE_NAME$(date +%Y_%m-%d_%H-%M)"
+rsync -avhzL --link-dest="$SAVEDIR/$LATESTBKUP" "$TARGETDIR" "$SAVEDIR/$SAVE_NAME$(date +%Y_%m-%d_%H-%M)"
 
 #30日以上前のバックアップを削除
 find "$SAVEDIR/*" -maxdepth 1 -type d -name "$SAVE_NAME*" -mtime +30 | xargs rm -rf
