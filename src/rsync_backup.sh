@@ -84,7 +84,7 @@ LATESTBKUP=$(ls $SAVEDIR | grep $SAVE_NAME | tail -n 1)
 rsync -avhzL --link-dest="$SAVEDIR/$LATESTBKUP" "$TARGETDIR" "$SAVEDIR/$SAVE_NAME$(date +%Y_%m-%d_%H-%M)"
 
 #30日以上前のバックアップを削除
-find "$SAVEDIR/" -maxdepth 1 -type d -name "$SAVE_NAME*" -mtime +30 | xargs rm -rf
+find "$SAVEDIR/" -maxdepth 1 -type d -name "$SAVE_NAME*" -mtime +3 | xargs rm -rf
 
 #標準出力と標準エラー出力のリダイレクトを停止
 exec 2>/dev/null
